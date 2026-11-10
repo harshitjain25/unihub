@@ -1,0 +1,28 @@
+{
+  "name": "unihub-db-assignment",
+  "version": "1.0.0",
+  "description": "UniHub: one campus platform for equipment booking, lost and found, and volunteering",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "migrate": "node database/migrate.js",
+    "seed": "node database/seed.js",
+    "check": "node scripts/check.js",
+    "test": "node --test test/*.test.js",
+    "test:integration": "node test/integration.js"
+  },
+  "keywords": [],
+  "author": "Harshit Jain",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.24.6"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

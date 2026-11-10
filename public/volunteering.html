@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Volunteering · UniHub</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script defer src="/js/common.js"></script>
+    <script defer src="/js/volunteering.js"></script>
+</head>
+<body>
+    <a class="skip-link" href="#content">Skip to main content</a>
+    <header class="site-header">
+        <a class="logo" href="/" aria-label="UniHub home">
+            <span class="logo-mark" aria-hidden="true">U</span>
+            <span class="logo-text">Uni<strong>Hub</strong></span>
+        </a>
+        <nav aria-label="Main">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/equipment.html">Equipment</a>
+            <a href="/lost-found.html">Lost &amp; Found</a>
+            <a href="/volunteering.html">Volunteering</a>
+            <a href="/profile">Profile</a>
+        </nav>
+        <button id="logout" class="secondary" type="button" hidden>Log out</button>
+    </header>
+
+    <main id="content">
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+        <p class="eyebrow">Small actions · Shared impact</p>
+        <h1>Volunteering opportunities</h1>
+        <p>Find ways to support your campus and community. Slots update as students join and leave.</p>
+
+        <section id="opportunity-editor" class="panel admin-panel" hidden>
+            <h2 id="editor-title">Add opportunity <span class="badge badge-admin">Admin</span></h2>
+            <form id="opportunity-form">
+                <input type="hidden" name="id">
+                <div class="form-grid">
+                    <label>Title<input name="title" type="text" required maxlength="150"></label>
+                    <label>Organization<input name="organization" type="text" required maxlength="150"></label>
+                    <label>Location<input name="location" type="text" required maxlength="255"></label>
+                    <label>Event date<input name="event_date" type="date" required></label>
+                    <label>Start time<input name="start_time" type="time" required></label>
+                    <label>End time<input name="end_time" type="time" required></label>
+                    <label>Total slots<input name="total_slots" type="number" required min="1" step="1"></label>
+                    <label>Status
+                        <select name="status">
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <span class="hint">"Full" is set automatically when no slots remain.</span>
+                    </label>
+                    <label class="wide">Description<textarea name="description" required maxlength="5000"></textarea></label>
+                </div>
+                <div class="actions">
+                    <button type="submit">Save opportunity</button>
+                    <button type="button" id="cancel-edit" class="secondary">Clear form</button>
+                </div>
+            </form>
+        </section>
+
+        <form id="opportunity-filters" class="panel filters" role="search">
+            <label>Search<input name="search" type="search" placeholder="Title, organization, or location"></label>
+            <label>Status
+                <select name="status">
+                    <option value="">All statuses</option>
+                    <option value="active">Active</option>
+                    <option value="full">Full</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </label>
+            <label>Show
+                <select name="show">
+                    <option value="all">All opportunities</option>
+                    <option value="mine">Only ones I joined</option>
+                </select>
+            </label>
+            <button type="submit">Apply filters</button>
+        </form>
+
+        <div id="opportunity-list" class="cards"><p class="loading">Loading opportunities…</p></div>
+    </main>
+
+    <footer>UniHub · Equipment, lost &amp; found, and volunteering in one place.</footer>
+</body>
+</html>

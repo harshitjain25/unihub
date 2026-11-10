@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log in · UniHub</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script defer src="/js/common.js"></script>
+    <script defer src="/js/auth.js"></script>
+</head>
+<body>
+    <a class="skip-link" href="#content">Skip to main content</a>
+    <header class="site-header">
+        <a class="logo" href="/" aria-label="UniHub home">
+            <span class="logo-mark" aria-hidden="true">U</span>
+            <span class="logo-text">Uni<strong>Hub</strong></span>
+        </a>
+        <nav aria-label="Main">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/equipment.html">Equipment</a>
+            <a href="/lost-found.html">Lost &amp; Found</a>
+            <a href="/volunteering.html">Volunteering</a>
+            <a href="/profile">Profile</a>
+        </nav>
+        <button id="logout" class="secondary" type="button" hidden>Log out</button>
+    </header>
+
+    <main id="content">
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+        <section class="auth panel">
+            <p class="eyebrow">Good to see you</p>
+            <h1>Log in to UniHub</h1>
+            <form id="login-form" novalidate>
+                <label for="identifier">Username or email</label>
+                <input id="identifier" name="identifier" type="text" autocomplete="username" required maxlength="150">
+
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="256">
+
+                <button type="submit">Log in</button>
+            </form>
+            <p>New to UniHub? <a href="/register.html">Create an account</a></p>
+        </section>
+    </main>
+
+    <footer>UniHub · Equipment, lost &amp; found, and volunteering in one place.</footer>
+</body>
+</html>

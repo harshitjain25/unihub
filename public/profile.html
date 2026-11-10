@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile · UniHub</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script defer src="/js/common.js"></script>
+    <script defer src="/js/profile.js"></script>
+</head>
+<body>
+    <a class="skip-link" href="#content">Skip to main content</a>
+    <header class="site-header">
+        <a class="logo" href="/" aria-label="UniHub home">
+            <span class="logo-mark" aria-hidden="true">U</span>
+            <span class="logo-text">Uni<strong>Hub</strong></span>
+        </a>
+        <nav aria-label="Main">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/equipment.html">Equipment</a>
+            <a href="/lost-found.html">Lost &amp; Found</a>
+            <a href="/volunteering.html">Volunteering</a>
+            <a href="/profile">Profile</a>
+        </nav>
+        <button id="logout" class="secondary" type="button" hidden>Log out</button>
+    </header>
+
+    <main id="content">
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+        <section class="auth panel">
+            <p class="eyebrow">Your account</p>
+            <h1 id="profile-heading">Profile</h1>
+            <p id="profile-intro" class="loading">Loading your profile…</p>
+            <dl id="profile-details" class="profile-details" hidden>
+                <dt>Username</dt><dd id="profile-username"></dd>
+                <dt>Email</dt><dd id="profile-email"></dd>
+                <dt>Role</dt><dd id="profile-role"></dd>
+                <dt>Member since</dt><dd id="profile-created"></dd>
+            </dl>
+            <div class="actions">
+                <a class="button" href="/dashboard.html">Go to dashboard</a>
+                <a class="button secondary" href="/logout">Log out</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>UniHub · Equipment, lost &amp; found, and volunteering in one place.</footer>
+</body>
+</html>

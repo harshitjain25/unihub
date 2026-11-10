@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lost & Found · UniHub</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script defer src="/js/common.js"></script>
+    <script defer src="/js/lost-found.js"></script>
+</head>
+<body>
+    <a class="skip-link" href="#content">Skip to main content</a>
+    <header class="site-header">
+        <a class="logo" href="/" aria-label="UniHub home">
+            <span class="logo-mark" aria-hidden="true">U</span>
+            <span class="logo-text">Uni<strong>Hub</strong></span>
+        </a>
+        <nav aria-label="Main">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/equipment.html">Equipment</a>
+            <a href="/lost-found.html">Lost &amp; Found</a>
+            <a href="/volunteering.html">Volunteering</a>
+            <a href="/profile">Profile</a>
+        </nav>
+        <button id="logout" class="secondary" type="button" hidden>Log out</button>
+    </header>
+
+    <main id="content">
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+        <p class="eyebrow">A community that looks out for you</p>
+        <h1>Lost something? Found something?</h1>
+
+        <section id="report-editor" class="panel">
+            <h2 id="editor-title">New report</h2>
+            <form id="report-form">
+                <input type="hidden" name="id">
+                <div class="form-grid">
+                    <label>Report type
+                        <select name="report_type">
+                            <option>Lost</option>
+                            <option>Found</option>
+                        </select>
+                    </label>
+                    <label>Item name<input name="item_name" type="text" required maxlength="150"></label>
+                    <label>Category<input name="category" type="text" required maxlength="80" placeholder="e.g. Keys, Electronics"></label>
+                    <label>Location<input name="location" type="text" required maxlength="255"></label>
+                    <label>Date lost or found<input name="item_date" type="date" required></label>
+                    <label>Contact email<input name="contact_email" type="email" required maxlength="150"></label>
+                    <label>Status
+                        <select name="status">
+                            <option>Open</option>
+                            <option>Resolved</option>
+                        </select>
+                    </label>
+                    <label class="wide">Description<textarea name="description" required maxlength="5000"></textarea></label>
+                </div>
+                <div class="actions">
+                    <button type="submit">Save report</button>
+                    <button type="button" id="cancel-edit" class="secondary">Clear form</button>
+                </div>
+            </form>
+        </section>
+
+        <form id="report-filters" class="panel filters" role="search">
+            <label>Search<input name="search" type="search" placeholder="Item, category, or location"></label>
+            <label>Type
+                <select name="report_type">
+                    <option value="">Lost and found</option>
+                    <option>Lost</option>
+                    <option>Found</option>
+                </select>
+            </label>
+            <label>Status
+                <select name="status">
+                    <option value="">All statuses</option>
+                    <option selected>Open</option>
+                    <option>Resolved</option>
+                </select>
+            </label>
+            <label>Show
+                <select name="mine">
+                    <option value="">Everyone's reports</option>
+                    <option value="1">Only my reports</option>
+                </select>
+            </label>
+            <button type="submit">Apply filters</button>
+        </form>
+
+        <div id="report-list" class="cards"><p class="loading">Loading reports…</p></div>
+    </main>
+
+    <footer>UniHub · Equipment, lost &amp; found, and volunteering in one place.</footer>
+</body>
+</html>

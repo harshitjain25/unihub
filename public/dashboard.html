@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard · UniHub</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script defer src="/js/common.js"></script>
+    <script defer src="/js/dashboard.js"></script>
+</head>
+<body>
+    <a class="skip-link" href="#content">Skip to main content</a>
+    <header class="site-header">
+        <a class="logo" href="/" aria-label="UniHub home">
+            <span class="logo-mark" aria-hidden="true">U</span>
+            <span class="logo-text">Uni<strong>Hub</strong></span>
+        </a>
+        <nav aria-label="Main">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/equipment.html">Equipment</a>
+            <a href="/lost-found.html">Lost &amp; Found</a>
+            <a href="/volunteering.html">Volunteering</a>
+            <a href="/profile">Profile</a>
+        </nav>
+        <button id="logout" class="secondary" type="button" hidden>Log out</button>
+    </header>
+
+    <main id="content">
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+        <p class="eyebrow">Your campus at a glance</p>
+        <h1 id="welcome">Welcome back.</h1>
+        <p id="role-line" class="loading">Loading your dashboard…</p>
+
+        <section id="stats" class="cards" aria-label="Your activity counts"></section>
+
+        <section id="admin-section" class="panel admin-panel" hidden>
+            <h2>Administrator overview</h2>
+            <div id="admin-stats" class="cards"></div>
+            <div class="actions">
+                <a class="button" href="/equipment.html#manage-bookings">Review bookings</a>
+                <a class="button secondary" href="/equipment.html#equipment-editor">Add equipment</a>
+                <a class="button secondary" href="/volunteering.html#opportunity-editor">Add opportunity</a>
+                <a class="button secondary" href="/lost-found.html">Manage reports</a>
+            </div>
+        </section>
+
+        <section class="cards" aria-label="Upcoming and recent">
+            <article class="card">
+                <h2>Upcoming bookings</h2>
+                <ul id="upcoming-bookings" class="list"><li class="loading">Loading…</li></ul>
+            </article>
+            <article class="card">
+                <h2>Upcoming volunteering</h2>
+                <ul id="upcoming-events" class="list"><li class="loading">Loading…</li></ul>
+            </article>
+            <article class="card">
+                <h2>Recent activity</h2>
+                <ul id="recent-activity" class="list"><li class="loading">Loading…</li></ul>
+            </article>
+        </section>
+
+        <h2 class="section-title">Go to</h2>
+        <section class="cards" aria-label="Modules">
+            <a class="card link-card" href="/equipment.html">
+                <h2>Equipment →</h2>
+                <p>Browse, book, and track campus equipment.</p>
+            </a>
+            <a class="card link-card" href="/lost-found.html">
+                <h2>Lost &amp; Found →</h2>
+                <p>Report, search, and resolve lost or found items.</p>
+            </a>
+            <a class="card link-card" href="/volunteering.html">
+                <h2>Volunteering →</h2>
+                <p>Join opportunities and manage your registrations.</p>
+            </a>
+            <a class="card link-card" href="/profile">
+                <h2>Profile →</h2>
+                <p>View your account details or log out.</p>
+            </a>
+        </section>
+    </main>
+
+    <footer>UniHub · Equipment, lost &amp; found, and volunteering in one place.</footer>
+</body>
+</html>

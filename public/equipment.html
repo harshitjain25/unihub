@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Equipment · UniHub</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script defer src="/js/common.js"></script>
+    <script defer src="/js/equipment.js"></script>
+</head>
+<body>
+    <a class="skip-link" href="#content">Skip to main content</a>
+    <header class="site-header">
+        <a class="logo" href="/" aria-label="UniHub home">
+            <span class="logo-mark" aria-hidden="true">U</span>
+            <span class="logo-text">Uni<strong>Hub</strong></span>
+        </a>
+        <nav aria-label="Main">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/equipment.html">Equipment</a>
+            <a href="/lost-found.html">Lost &amp; Found</a>
+            <a href="/volunteering.html">Volunteering</a>
+            <a href="/profile">Profile</a>
+        </nav>
+        <button id="logout" class="secondary" type="button" hidden>Log out</button>
+    </header>
+
+    <main id="content">
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+        <p class="eyebrow">Borrow · Create · Return</p>
+        <h1>Campus equipment</h1>
+        <p>Request equipment for your coursework. Pending and approved bookings hold stock until they are cancelled, rejected, or returned.</p>
+
+        <section id="equipment-editor" class="panel admin-panel" hidden>
+            <h2 id="editor-title">Add equipment <span class="badge badge-admin">Admin</span></h2>
+            <form id="equipment-form">
+                <input type="hidden" name="id">
+                <div class="form-grid">
+                    <label>Name<input name="name" type="text" required maxlength="150"></label>
+                    <label>Category
+                        <select name="category" required>
+                            <option>Laptop</option>
+                            <option>Camera</option>
+                            <option>Projector</option>
+                            <option>Audio equipment</option>
+                            <option>Lab equipment</option>
+                            <option>Other</option>
+                        </select>
+                    </label>
+                    <label>Total quantity<input name="total_quantity" type="number" required min="1" step="1"></label>
+                    <label>Status
+                        <select name="status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </label>
+                    <label class="wide">Description<textarea name="description" required maxlength="5000"></textarea></label>
+                </div>
+                <div class="actions">
+                    <button type="submit">Save equipment</button>
+                    <button type="button" id="cancel-edit" class="secondary">Clear form</button>
+                </div>
+            </form>
+        </section>
+
+        <form id="equipment-filters" class="panel filters" role="search">
+            <label>Search<input name="search" type="search" placeholder="Name or description"></label>
+            <label>Category
+                <select name="category">
+                    <option value="">All categories</option>
+                    <option>Laptop</option>
+                    <option>Camera</option>
+                    <option>Projector</option>
+                    <option>Audio equipment</option>
+                    <option>Lab equipment</option>
+                    <option>Other</option>
+                </select>
+            </label>
+            <button type="submit">Search</button>
+        </form>
+
+        <div id="equipment-list" class="cards"><p class="loading">Loading equipment…</p></div>
+
+        <section id="booking-panel" class="panel" hidden>
+            <h2 id="booking-title">Book equipment</h2>
+            <form id="booking-form">
+                <input type="hidden" name="equipment_id">
+                <div class="form-grid">
+                    <label>Start date<input name="start_date" type="date" required></label>
+                    <label>End date<input name="end_date" type="date" required></label>
+                    <label>Quantity<input name="quantity" type="number" required min="1" step="1" value="1"></label>
+                </div>
+                <div class="actions">
+                    <button type="submit">Request booking</button>
+                    <button type="button" id="close-booking" class="secondary">Cancel</button>
+                </div>
+            </form>
+        </section>
+
+        <h2 class="section-title">My bookings</h2>
+        <div id="my-bookings" class="cards"><p class="loading">Loading your bookings…</p></div>
+
+        <section id="manage-bookings" class="panel admin-panel" hidden>
+            <h2>All bookings <span class="badge badge-admin">Admin</span></h2>
+            <form id="booking-filters" class="filters">
+                <label>Status
+                    <select name="status">
+                        <option value="">All statuses</option>
+                        <option value="pending" selected>Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="returned">Returned</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </label>
+                <button type="submit">Filter</button>
+            </form>
+            <div id="all-bookings" class="table-wrap"></div>
+        </section>
+    </main>
+
+    <footer>UniHub · Equipment, lost &amp; found, and volunteering in one place.</footer>
+</body>
+</html>
