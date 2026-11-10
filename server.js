@@ -45,7 +45,7 @@ app.use((req, res, next) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader(
         'Content-Security-Policy',
-        "default-src 'self'; style-src 'self'; script-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+        "default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
     );
     if (req.path.startsWith('/api')) {
         res.setHeader('Cache-Control', 'no-store');
@@ -100,6 +100,9 @@ app.get('/logout', async (req, res) => {
     res.redirect('/login.html?loggedOut=1');
 });
 
+// Tabler UI kit (CSS, JS, and icon font) served from node_modules, so it works offline.
+app.use('/vendor/tabler', express.static(path.join(__dirname, 'node_modules/@tabler/core/dist')));
+app.use('/vendor/tabler-icons', express.static(path.join(__dirname, 'node_modules/@tabler/icons-webfont/dist')));
 app.use(express.static(PUBLIC_DIR, { extensions: ['html'] }));
 app.use((req, res) => res.status(404).sendFile(path.join(PUBLIC_DIR, '404.html')));
 

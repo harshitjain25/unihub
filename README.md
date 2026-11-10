@@ -46,7 +46,8 @@ UniHub puts these three services behind one login. My personal goal was to build
 
 | Layer | Technology |
 |---|---|
-| Frontend | HTML5, CSS3, vanilla JavaScript (no frameworks) |
+| Frontend | HTML5, CSS3, vanilla JavaScript (no JavaScript framework) |
+| UI kit | [Tabler](https://github.com/tabler/tabler) (`@tabler/core`) and [Tabler Icons](https://github.com/tabler/tabler-icons) webfont, both MIT-licensed |
 | Backend | Node.js, Express 5 |
 | Database | MySQL with `mysql2` (parameterized queries, connection pool) |
 | Auth and sessions | Node.js `crypto` (PBKDF2-SHA512), `express-session`, `cookie-parser` |
@@ -90,7 +91,7 @@ unihub-db-assignment/
 │   ├── schema.sql         creates the unihub database and all tables
 │   ├── seed.js            adds sample equipment, reports, and opportunities
 │   └── migrate.js         upgrades an older UniHub/login-assignment database
-├── public/                pages, css/styles.css, js/*.js
+├── public/                pages, css/styles.css (small additions to Tabler), js/*.js
 ├── test/                  unit, HTTP, and integration tests
 ├── scripts/check.js       syntax-checks every JavaScript file
 ├── .env.example
@@ -256,6 +257,7 @@ The integration test creates uniquely named `test_…` accounts and records, run
 - Session cookies use `httpOnly`, `sameSite: lax`, and `secure` in production, and expire after 2 hours. The session ID is regenerated at login.
 - Requests that change data from another website's origin are rejected. A Content-Security-Policy blocks inline scripts, and all user text is HTML-escaped before display.
 - Secrets live only in `.env`, which is git-ignored.
+- The Tabler CSS, JavaScript, and icon font are installed by `npm install` and served by Express from `node_modules` at `/vendor/...`, so the pages load nothing from outside sites and work offline.
 
 **Known limitations (fine for a class project):**
 - Sessions use the default in-memory store, so restarting the server logs everyone out.

@@ -12,7 +12,7 @@ test('public pages, protected pages, API gates, and origin protection', async ()
     const base = `http://127.0.0.1:${server.address().port}`;
 
     try {
-        for (const page of ['/', '/login.html', '/register.html', '/css/styles.css', '/js/common.js']) {
+        for (const page of ['/', '/login.html', '/register.html', '/css/styles.css', '/js/common.js', '/vendor/tabler/css/tabler.min.css', '/vendor/tabler/js/tabler.min.js', '/vendor/tabler-icons/tabler-icons.min.css']) {
             assert.equal((await fetch(base + page)).status, 200, page);
         }
 

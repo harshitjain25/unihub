@@ -4,57 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Your campus, connected · UniHub</title>
+    <link rel="stylesheet" href="/vendor/tabler/css/tabler.min.css">
+    <link rel="stylesheet" href="/vendor/tabler-icons/tabler-icons.min.css">
     <link rel="stylesheet" href="/css/styles.css">
+    <script defer src="/vendor/tabler/js/tabler.min.js"></script>
     <script defer src="/js/common.js"></script>
 </head>
 <body>
-    <a class="skip-link" href="#content">Skip to main content</a>
-    <header class="site-header">
-        <a class="logo" href="/" aria-label="UniHub home">
-            <span class="logo-mark" aria-hidden="true">U</span>
-            <span class="logo-text">Uni<strong>Hub</strong></span>
-        </a>
-        <nav aria-label="Main">
-            <a href="/dashboard.html">Dashboard</a>
-            <a href="/equipment.html">Equipment</a>
-            <a href="/lost-found.html">Lost &amp; Found</a>
-            <a href="/volunteering.html">Volunteering</a>
-            <a href="/profile">Profile</a>
-        </nav>
-        <button id="logout" class="secondary" type="button" hidden>Log out</button>
-    </header>
-
-    <main id="content">
-        <div id="notice" class="notice" role="status" aria-live="polite"></div>
-        <section class="hero">
-            <p class="eyebrow">The campus connection</p>
-            <h1>One campus.<br>One place for it all.</h1>
-            <p>Borrow equipment, find what you lost, and give your time to something that matters — without hunting through separate websites, emails, and noticeboards.</p>
-            <div class="actions">
-                <a class="button" href="/register.html">Create an account</a>
-                <a class="button secondary" href="/login.html">Log in</a>
+    <a class="visually-hidden-focusable btn btn-primary position-absolute m-2" href="#content">Skip to main content</a>
+    <div class="page">
+        <header class="navbar navbar-expand d-print-none">
+            <div class="container-xl">
+                <a class="navbar-brand pe-0 pe-md-3" href="/" aria-label="UniHub home">
+                    <span class="brand-mark" aria-hidden="true">U</span>UniHub
+                </a>
+                <div class="navbar-nav flex-row order-md-last ms-auto">
+                    <div class="btn-list">
+                        <a class="btn d-none d-sm-inline-flex" href="/login.html">Log in</a>
+                        <a class="btn btn-primary" href="/register.html">Create account</a>
+                    </div>
+                </div>
             </div>
-        </section>
+        </header>
+        <main class="page-wrapper" id="content">
 
-        <section class="cards" aria-label="UniHub services">
-            <article class="card">
-                <p class="eyebrow">01 · Borrow</p>
-                <h2>Equipment booking</h2>
-                <p>Find laptops, cameras, projectors, and lab gear, check availability, and request a booking.</p>
-            </article>
-            <article class="card">
-                <p class="eyebrow">02 · Reconnect</p>
-                <h2>Lost and found</h2>
-                <p>Report a missing item or help a found one get home. Search by item, category, or location.</p>
-            </article>
-            <article class="card">
-                <p class="eyebrow">03 · Contribute</p>
-                <h2>Volunteering</h2>
-                <p>Browse campus and community events, see remaining slots, and join with one click.</p>
-            </article>
-        </section>
-    </main>
-
-    <footer>UniHub · Equipment, lost &amp; found, and volunteering in one place.</footer>
+            <div class="page-body">
+                <div class="container-xl">
+                    <div id="notice" class="alert" role="status" aria-live="polite" hidden></div>
+                    <div class="row g-3 g-lg-5 align-items-center py-4">
+                        <div class="col-lg-6">
+                            <h1 class="hero-title fw-bold mb-3">Equipment, lost &amp; found, and volunteering in one campus portal.</h1>
+                            <p class="fs-3 text-secondary mb-4">Book lab and media equipment, report lost items, and sign up for volunteering events with a single UniHub account.</p>
+                            <div class="btn-list">
+                                <a class="btn btn-primary btn-lg" href="/register.html">Create an account</a>
+                                <a class="btn btn-lg" href="/login.html">Log in</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item py-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto"><span class="avatar bg-blue-lt"><i class="ti ti-device-laptop" aria-hidden="true"></i></span></div>
+                                            <div class="col">
+                                                <div class="fw-bold">Equipment booking</div>
+                                                <div class="text-secondary">Check availability for laptops, cameras, projectors, and lab gear, then request a booking.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item py-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto"><span class="avatar bg-orange-lt"><i class="ti ti-search" aria-hidden="true"></i></span></div>
+                                            <div class="col">
+                                                <div class="fw-bold">Lost and found</div>
+                                                <div class="text-secondary">Report a missing item or help a found one get home. Search by item, category, or location.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item py-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto"><span class="avatar bg-green-lt"><i class="ti ti-heart-handshake" aria-hidden="true"></i></span></div>
+                                            <div class="col">
+                                                <div class="fw-bold">Volunteering</div>
+                                                <div class="text-secondary">Browse campus and community events, see remaining slots, and join in one click.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer footer-transparent d-print-none">
+                <div class="container-xl text-secondary">UniHub · Equipment, lost &amp; found, and volunteering in one place.</div>
+            </footer>
+        </main>
+    </div>
 </body>
 </html>

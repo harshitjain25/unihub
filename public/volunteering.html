@@ -4,85 +4,188 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Volunteering · UniHub</title>
+    <link rel="stylesheet" href="/vendor/tabler/css/tabler.min.css">
+    <link rel="stylesheet" href="/vendor/tabler-icons/tabler-icons.min.css">
     <link rel="stylesheet" href="/css/styles.css">
+    <script defer src="/vendor/tabler/js/tabler.min.js"></script>
     <script defer src="/js/common.js"></script>
     <script defer src="/js/volunteering.js"></script>
 </head>
 <body>
-    <a class="skip-link" href="#content">Skip to main content</a>
-    <header class="site-header">
-        <a class="logo" href="/" aria-label="UniHub home">
-            <span class="logo-mark" aria-hidden="true">U</span>
-            <span class="logo-text">Uni<strong>Hub</strong></span>
-        </a>
-        <nav aria-label="Main">
-            <a href="/dashboard.html">Dashboard</a>
-            <a href="/equipment.html">Equipment</a>
-            <a href="/lost-found.html">Lost &amp; Found</a>
-            <a href="/volunteering.html">Volunteering</a>
-            <a href="/profile">Profile</a>
-        </nav>
-        <button id="logout" class="secondary" type="button" hidden>Log out</button>
-    </header>
-
-    <main id="content">
-        <div id="notice" class="notice" role="status" aria-live="polite"></div>
-        <p class="eyebrow">Small actions · Shared impact</p>
-        <h1>Volunteering opportunities</h1>
-        <p>Find ways to support your campus and community. Slots update as students join and leave.</p>
-
-        <section id="opportunity-editor" class="panel admin-panel" hidden>
-            <h2 id="editor-title">Add opportunity <span class="badge badge-admin">Admin</span></h2>
-            <form id="opportunity-form">
-                <input type="hidden" name="id">
-                <div class="form-grid">
-                    <label>Title<input name="title" type="text" required maxlength="150"></label>
-                    <label>Organization<input name="organization" type="text" required maxlength="150"></label>
-                    <label>Location<input name="location" type="text" required maxlength="255"></label>
-                    <label>Event date<input name="event_date" type="date" required></label>
-                    <label>Start time<input name="start_time" type="time" required></label>
-                    <label>End time<input name="end_time" type="time" required></label>
-                    <label>Total slots<input name="total_slots" type="number" required min="1" step="1"></label>
-                    <label>Status
-                        <select name="status">
-                            <option value="active">Active</option>
-                            <option value="completed">Completed</option>
-                            <option value="cancelled">Cancelled</option>
-                        </select>
-                        <span class="hint">"Full" is set automatically when no slots remain.</span>
-                    </label>
-                    <label class="wide">Description<textarea name="description" required maxlength="5000"></textarea></label>
+    <a class="visually-hidden-focusable btn btn-primary position-absolute m-2" href="#content">Skip to main content</a>
+    <div class="page">
+        <header class="navbar navbar-expand-md d-print-none">
+            <div class="container-xl">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand pe-0 pe-md-3" href="/dashboard.html" aria-label="UniHub home">
+                    <span class="brand-mark" aria-hidden="true">U</span>UniHub
+                </a>
+                <div class="navbar-nav flex-row order-md-last">
+                    <div class="nav-item dropdown" id="user-menu" hidden>
+                        <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open account menu">
+                            <span class="avatar avatar-sm" id="user-initials"></span>
+                            <span class="d-none d-xl-block ps-2">
+                                <span class="d-block" id="user-name"></span>
+                                <span class="d-block mt-1 small text-secondary" id="user-role"></span>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <a href="/profile" class="dropdown-item"><i class="ti ti-user dropdown-item-icon" aria-hidden="true"></i>Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <button type="button" id="logout" class="dropdown-item"><i class="ti ti-logout dropdown-item-icon" aria-hidden="true"></i>Log out</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="actions">
-                    <button type="submit">Save opportunity</button>
-                    <button type="button" id="cancel-edit" class="secondary">Clear form</button>
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard.html">
+                                <span class="nav-link-icon"><i class="ti ti-layout-dashboard" aria-hidden="true"></i></span>
+                                <span class="nav-link-title">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/equipment.html">
+                                <span class="nav-link-icon"><i class="ti ti-device-laptop" aria-hidden="true"></i></span>
+                                <span class="nav-link-title">Equipment</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/lost-found.html">
+                                <span class="nav-link-icon"><i class="ti ti-search" aria-hidden="true"></i></span>
+                                <span class="nav-link-title">Lost &amp; Found</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/volunteering.html">
+                                <span class="nav-link-icon"><i class="ti ti-heart-handshake" aria-hidden="true"></i></span>
+                                <span class="nav-link-title">Volunteering</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">
+                                <span class="nav-link-icon"><i class="ti ti-user" aria-hidden="true"></i></span>
+                                <span class="nav-link-title">Profile</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <main class="page-wrapper" id="content">
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <div class="page-pretitle">Contribute</div>
+                            <h1 class="page-title">Volunteering</h1>
+                        </div>
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                                <button type="button" id="add-opportunity" class="btn btn-primary" hidden><i class="ti ti-plus icon" aria-hidden="true"></i>Add opportunity</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-body">
+                <div class="container-xl">
+                    <div id="notice" class="alert" role="status" aria-live="polite" hidden></div>
+                    <p class="text-secondary">Find ways to support your campus and community. Slots update as students join and leave.</p>
+
+                    <form id="opportunity-filters" class="card mb-3" role="search">
+                        <div class="card-body">
+                            <div class="row g-2 align-items-end">
+                                <div class="col-md">
+                                    <label class="form-label" for="opportunity-search">Search</label>
+                                    <div class="input-icon">
+                                        <span class="input-icon-addon"><i class="ti ti-search" aria-hidden="true"></i></span>
+                                        <input id="opportunity-search" class="form-control" name="search" type="search" placeholder="Title, organization, or location">
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <label class="form-label" for="opportunity-status-filter">Status</label>
+                                    <select id="opportunity-status-filter" class="form-select" name="status"><option value="">All</option><option value="active">Active</option><option value="full">Full</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <label class="form-label" for="opportunity-show">Show</label>
+                                    <select id="opportunity-show" class="form-select" name="show"><option value="all">All</option><option value="mine">Joined by me</option></select>
+                                </div>
+                                <div class="col-md-auto">
+                                    <button type="submit" class="btn btn-primary w-100"><i class="ti ti-filter icon" aria-hidden="true"></i>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div id="opportunity-list" class="row row-cards">
+                        <div class="col-12 text-secondary py-3">Loading opportunities…</div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer footer-transparent d-print-none">
+                <div class="container-xl text-secondary">UniHub · Equipment, lost &amp; found, and volunteering in one place.</div>
+            </footer>
+        </main>
+    </div>
+    <div class="modal modal-blur fade" id="opportunity-editor" tabindex="-1" aria-labelledby="editor-title" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <form class="modal-content" id="opportunity-form">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="editor-title">Add opportunity</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-notice alert" role="alert" hidden></div>
+                    <input type="hidden" name="id">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="opportunity-title">Title</label>
+                            <input id="opportunity-title" class="form-control" name="title" type="text" required maxlength="150">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="opportunity-organization">Organization</label>
+                            <input id="opportunity-organization" class="form-control" name="organization" type="text" required maxlength="150">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="opportunity-location">Location</label>
+                            <input id="opportunity-location" class="form-control" name="location" type="text" required maxlength="255">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="opportunity-date">Event date</label>
+                            <input id="opportunity-date" class="form-control" name="event_date" type="date" required>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="form-label" for="opportunity-start">Start time</label>
+                            <input id="opportunity-start" class="form-control" name="start_time" type="time" required>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="form-label" for="opportunity-end">End time</label>
+                            <input id="opportunity-end" class="form-control" name="end_time" type="time" required>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="form-label" for="opportunity-slots">Total slots</label>
+                            <input id="opportunity-slots" class="form-control" name="total_slots" type="number" required min="1" step="1">
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="form-label" for="opportunity-status">Status</label>
+                            <select id="opportunity-status" class="form-select" name="status"><option value="active">Active</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select>
+                            <small class="form-hint">“Full” is set automatically.</small>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="opportunity-description">Description</label>
+                            <textarea id="opportunity-description" class="form-control" name="description" rows="4" required maxlength="5000"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save opportunity</button>
                 </div>
             </form>
-        </section>
-
-        <form id="opportunity-filters" class="panel filters" role="search">
-            <label>Search<input name="search" type="search" placeholder="Title, organization, or location"></label>
-            <label>Status
-                <select name="status">
-                    <option value="">All statuses</option>
-                    <option value="active">Active</option>
-                    <option value="full">Full</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
-                </select>
-            </label>
-            <label>Show
-                <select name="show">
-                    <option value="all">All opportunities</option>
-                    <option value="mine">Only ones I joined</option>
-                </select>
-            </label>
-            <button type="submit">Apply filters</button>
-        </form>
-
-        <div id="opportunity-list" class="cards"><p class="loading">Loading opportunities…</p></div>
-    </main>
-
-    <footer>UniHub · Equipment, lost &amp; found, and volunteering in one place.</footer>
+        </div>
+    </div>
 </body>
 </html>

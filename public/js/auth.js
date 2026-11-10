@@ -38,8 +38,7 @@ if (registerForm) {
         runAction(async () => {
             const result = await apiRequest('/auth/register', { method: 'POST', body: values });
             registerForm.reset();
-            $('#notice').className = 'notice';
-            $('#notice').innerHTML = `${escapeHTML(result.message)} <a href="/login.html">Go to the login page</a>`;
+            showNotice(result.message, false, '<a href="/login.html" class="alert-link">Go to the login page</a>');
         });
     });
 }

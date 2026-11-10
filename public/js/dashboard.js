@@ -1,12 +1,50 @@
 // Dashboard: counts, upcoming items, recent activity, and an admin overview.
 'use strict';
 
+// Rows for a list-group card, or a muted line when there is nothing to show.
 function listItems(rows, renderRow, emptyText) {
-    return rows.length ? rows.map((row) => `<li>${renderRow(row)}</li>`).join('') : `<li class="empty">${escapeHTML(emptyText)}</li>`;
+    return rows.length
+        ? rows.map((row) => `<div class="list-group-item">${renderRow(row)}</div>`).join('')
+        : `<div class="list-group-item text-secondary">${escapeHTML(emptyText)}</div>`;
 }
 
-function statCard(number, label) {
-    return `<article class="card"><div class="stat">${Number(number)}</div><p>${escapeHTML(label)}</p></article>`;
+// One line of a list item: main text, a muted line under it, and something on the right.
+function listRow(main, sub, right = '') {
+    return `
+        <div class="row align-items-center">
+            <div class="col text-truncate">
+                <div class="text-body text-truncate">${main}</div>
+                <div class="text-secondary small text-truncate">${sub}</div>
+            </div>
+            ${right ? `<div class="col-auto">${right}</div>` : ''}
+        </div>`;
+}
+
+function statCard(number, label, icon, color, href) {
+    return `
+        <div class="col-sm-6 col-lg-4">
+            <a class="card card-sm card-link" href="${href}">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="avatar bg-${color} text-white"><i class="ti ${icon}" aria-hidden="true"></i></span>
+                        </div>
+                        <div class="col">
+                            <div class="h2 mb-0">${Number(number)}</div>
+                            <div class="text-secondary">${escapeHTML(label)}</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>`;
+}
+
+function adminStat(number, label) {
+    return `
+        <div class="datagrid-item">
+            <div class="datagrid-title">${escapeHTML(label)}</div>
+            <div class="datagrid-content h2 mb-0">${Number(number)}</div>
+        </div>`;
 }
 
 runAction(async () => {
@@ -14,8 +52,7 @@ runAction(async () => {
     const { data } = await apiRequest('/dashboard');
     const { user, counts } = data;
 
-    $('#welcome').textContent = `Welcome back, ${user.username}.`;
-    $('#role-line').className = '';
+    $('#welcome').textContent = `Welcome back, ${user.username}`;
     $('#role-line').innerHTML = `Signed in as ${statusBadge(user.role === 'admin' ? 'admin' : 'student')}`;
 
     const welcome = sessionStorage.getItem('welcomeMessage');
@@ -25,40 +62,45 @@ runAction(async () => {
     }
 
     $('#stats').innerHTML = [
-        statCard(counts.activeBookings, 'Active equipment bookings'),
-        statCard(counts.openReports, 'Your open lost & found reports'),
-        statCard(counts.joinedOpportunities, 'Volunteering opportunities joined')
+        statCard(counts.activeBookings, 'Active equipment bookings', 'ti-device-laptop', 'blue', '/equipment.html'),
+        statCard(counts.openReports, 'Your open lost & found reports', 'ti-search', 'orange', '/lost-found.html'),
+        statCard(counts.joinedOpportunities, 'Volunteering opportunities joined', 'ti-heart-handshake', 'green', '/volunteering.html')
     ].join('');
 
     $('#upcoming-bookings').innerHTML = listItems(
         data.upcomingBookings,
-        (b) => `<strong>${escapeHTML(b.equipment_name)}</strong> × ${b.quantity} ${statusBadge(b.status)}
-                <div class="meta">${formatDate(b.start_date)} → ${formatDate(b.end_date)}</div>`,
-        'No upcoming bookings. Browse equipment to get started.'
+        (b) => listRow(
+            `${escapeHTML(b.equipment_name)} × ${b.quantity}`,
+            `${formatDate(b.start_date)} → ${formatDate(b.end_date)}`,
+            statusBadge(b.status)
+        ),
+        'No upcoming bookings yet.'
     );
 
     $('#upcoming-events').innerHTML = listItems(
         data.upcomingEvents,
-        (o) => `<strong>${escapeHTML(o.title)}</strong>
-                <div class="meta">${formatDate(o.event_date)} · ${formatTime(o.start_time)} · ${escapeHTML(o.location)}</div>`,
-        'No upcoming volunteering. Find an opportunity to join.'
+        (o) => listRow(
+            escapeHTML(o.title),
+            `${formatDate(o.event_date)} · ${formatTime(o.start_time)} · ${escapeHTML(o.location)}`
+        ),
+        'No upcoming volunteering yet.'
     );
 
     $('#recent-activity').innerHTML = listItems(
         data.recentActivity,
-        (a) => `${escapeHTML(a.summary)}<div class="meta">${formatDate(a.happened_at)}</div>`,
-        'Nothing yet — your bookings, reports, and signups will appear here.'
+        (a) => listRow(escapeHTML(a.summary), formatDate(a.happened_at)),
+        'Your bookings, reports, and signups will appear here.'
     );
 
     if (data.admin) {
         $('#admin-section').hidden = false;
         $('#admin-stats').innerHTML = [
-            statCard(data.admin.pendingBookings, 'Bookings awaiting review'),
-            statCard(data.admin.approvedBookings, 'Approved bookings out'),
-            statCard(data.admin.equipmentItems, 'Equipment items'),
-            statCard(data.admin.openReports, 'Open lost & found reports'),
-            statCard(data.admin.upcomingOpportunities, 'Upcoming opportunities'),
-            statCard(data.admin.accounts, 'Registered accounts')
+            adminStat(data.admin.pendingBookings, 'Bookings awaiting review'),
+            adminStat(data.admin.approvedBookings, 'Approved bookings out'),
+            adminStat(data.admin.equipmentItems, 'Equipment items'),
+            adminStat(data.admin.openReports, 'Open lost & found reports'),
+            adminStat(data.admin.upcomingOpportunities, 'Upcoming opportunities'),
+            adminStat(data.admin.accounts, 'Registered accounts')
         ].join('');
     }
 });

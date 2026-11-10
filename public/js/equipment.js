@@ -7,86 +7,131 @@ let equipmentItems = [];
 const equipmentForm = $('#equipment-form');
 const bookingForm = $('#booking-form');
 
+const CATEGORY_ICONS = {
+    Laptop: 'ti-device-laptop',
+    Camera: 'ti-camera',
+    Projector: 'ti-presentation',
+    'Audio equipment': 'ti-headphones',
+    'Lab equipment': 'ti-microscope',
+    Other: 'ti-package'
+};
+
 // ---------- Equipment list ----------
 
 function equipmentCard(item) {
     const canBook = item.status === 'active' && item.available_quantity > 0;
-    const adminButtons = currentUser.role === 'admin'
-        ? actionButton('edit', item.id, 'Edit') + actionButton('delete', item.id, 'Delete', 'danger')
-        : '';
+    const percentAvailable = item.total_quantity ? (item.available_quantity / item.total_quantity) * 100 : 0;
+    const barColor = item.available_quantity === 0 ? 'bg-red' : percentAvailable < 35 ? 'bg-orange' : 'bg-green';
+    const buttons = [
+        canBook ? actionButton('book', item.id, 'Book', '') : '',
+        currentUser.role === 'admin' ? actionButton('edit', item.id, 'Edit') + actionButton('delete', item.id, 'Delete', 'danger') : ''
+    ].join('');
+
     return `
-        <article class="card">
-            <p class="eyebrow">${escapeHTML(item.category)}</p>
-            <h3>${escapeHTML(item.name)}</h3>
-            ${statusBadge(item.status)}
-            <p class="description">${escapeHTML(item.description)}</p>
-            <p><strong>${item.available_quantity} of ${item.total_quantity}</strong> available</p>
-            <div class="actions">
-                ${canBook ? actionButton('book', item.id, 'Book', '') : ''}
-                ${adminButtons}
+        <div class="col-md-6 col-xl-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-start mb-3">
+                        <span class="avatar bg-primary-lt me-3"><i class="ti ${CATEGORY_ICONS[item.category] || 'ti-package'}" aria-hidden="true"></i></span>
+                        <div class="flex-fill">
+                            <div class="text-secondary small">${escapeHTML(item.category)}</div>
+                            <h3 class="card-title mb-0">${escapeHTML(item.name)}</h3>
+                        </div>
+                        ${statusBadge(item.status)}
+                    </div>
+                    <p class="text-secondary card-description">${escapeHTML(item.description)}</p>
+                    <div class="d-flex small mb-1">
+                        <span class="text-secondary">Available</span>
+                        <span class="ms-auto fw-bold">${item.available_quantity} of ${item.total_quantity}</span>
+                    </div>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar ${barColor}" data-progress="${percentAvailable}" role="progressbar"
+                             aria-valuenow="${item.available_quantity}" aria-valuemin="0" aria-valuemax="${item.total_quantity}"
+                             aria-label="${item.available_quantity} of ${item.total_quantity} available"></div>
+                    </div>
+                </div>
+                ${buttons ? `<div class="card-footer"><div class="btn-list">${buttons}</div></div>` : ''}
             </div>
-        </article>`;
+        </div>`;
 }
 
 async function loadEquipment() {
     const query = new URLSearchParams(formValues($('#equipment-filters')));
     equipmentItems = (await apiRequest(`/equipment?${query}`)).data;
-    $('#equipment-list').innerHTML = equipmentItems.length
+    const list = $('#equipment-list');
+    list.innerHTML = equipmentItems.length
         ? equipmentItems.map(equipmentCard).join('')
-        : emptyState('No equipment matches your search.');
+        : emptyState('No equipment matches your search.', 'ti-search');
+    applyProgressBars(list);
 }
 
 // ---------- Bookings ----------
 
-function myBookingCard(booking) {
+function bookingTable(headings, rows) {
+    return `
+        <table class="table card-table table-vcenter">
+            <thead><tr>${headings.map((h) => `<th>${h}</th>`).join('')}</tr></thead>
+            <tbody>${rows.join('')}</tbody>
+        </table>`;
+}
+
+function myBookingRow(booking) {
     const canCancel = ['pending', 'approved'].includes(booking.status);
     return `
-        <article class="card">
-            <h3>${escapeHTML(booking.equipment_name)}</h3>
-            ${statusBadge(booking.status)}
-            <p class="meta">${formatDate(booking.start_date)} → ${formatDate(booking.end_date)} · Quantity ${booking.quantity}</p>
-            ${canCancel ? `<div class="actions">${actionButton('cancel-booking', booking.id, 'Cancel booking')}</div>` : ''}
-        </article>`;
+        <tr>
+            <td>${escapeHTML(booking.equipment_name)}</td>
+            <td class="text-secondary">${formatDate(booking.start_date)} → ${formatDate(booking.end_date)}</td>
+            <td>${booking.quantity}</td>
+            <td>${statusBadge(booking.status)}</td>
+            <td class="text-end">${canCancel ? actionButton('cancel-booking', booking.id, 'Cancel booking') : ''}</td>
+        </tr>`;
 }
 
 // A button that changes a booking to `status` when an administrator clicks it.
 function statusButton(bookingId, status, label, style) {
-    return `<button type="button" class="${style}" data-action="set-status" data-status="${status}" data-id="${bookingId}">${label}</button>`;
+    return `<button type="button" class="btn ${style}" data-action="set-status" data-status="${status}" data-id="${bookingId}">${label}</button>`;
 }
 
 // Buttons an administrator sees for each booking status.
 function adminBookingButtons(booking) {
     if (booking.status === 'pending') {
-        return statusButton(booking.id, 'approved', 'Approve', '') + statusButton(booking.id, 'rejected', 'Reject', 'danger');
+        return statusButton(booking.id, 'approved', 'Approve', 'btn-success') + statusButton(booking.id, 'rejected', 'Reject', 'btn-outline-danger');
     }
     if (booking.status === 'approved') {
-        return statusButton(booking.id, 'returned', 'Mark returned', '');
+        return statusButton(booking.id, 'returned', 'Mark returned', 'btn-primary');
     }
     return '';
 }
 
+function adminBookingRow(b) {
+    return `
+        <tr>
+            <td>
+                <div class="d-flex align-items-center">
+                    <span class="avatar avatar-sm me-2">${escapeHTML(initials(b.username))}</span>
+                    ${escapeHTML(b.username)}
+                </div>
+            </td>
+            <td>${escapeHTML(b.equipment_name)}</td>
+            <td class="text-secondary">${formatDate(b.start_date)} → ${formatDate(b.end_date)}</td>
+            <td>${b.quantity}</td>
+            <td>${statusBadge(b.status)}</td>
+            <td class="text-end"><div class="btn-list justify-content-end flex-nowrap">${adminBookingButtons(b)}</div></td>
+        </tr>`;
+}
+
 async function loadBookings() {
     const mine = (await apiRequest('/bookings/mine')).data;
-    $('#my-bookings').innerHTML = mine.length ? mine.map(myBookingCard).join('') : emptyState('You have no bookings yet.');
+    $('#my-bookings').innerHTML = mine.length
+        ? bookingTable(['Equipment', 'Dates', 'Qty', 'Status', '<span class="visually-hidden">Actions</span>'], mine.map(myBookingRow))
+        : emptyState('You have no bookings yet. Pick an item above to book it.', 'ti-calendar');
 
     if (currentUser.role !== 'admin') return;
     const query = new URLSearchParams(formValues($('#booking-filters')));
     const all = (await apiRequest(`/bookings?${query}`)).data;
     $('#all-bookings').innerHTML = all.length
-        ? `<table>
-               <thead><tr><th>Student</th><th>Equipment</th><th>Dates</th><th>Qty</th><th>Status</th><th>Actions</th></tr></thead>
-               <tbody>${all.map((b) => `
-                   <tr>
-                       <td>${escapeHTML(b.username)}</td>
-                       <td>${escapeHTML(b.equipment_name)}</td>
-                       <td>${formatDate(b.start_date)} → ${formatDate(b.end_date)}</td>
-                       <td>${b.quantity}</td>
-                       <td>${statusBadge(b.status)}</td>
-                       <td><div class="actions">${adminBookingButtons(b)}</div></td>
-                   </tr>`).join('')}
-               </tbody>
-           </table>`
-        : emptyState('No bookings with this status.');
+        ? bookingTable(['Student', 'Equipment', 'Dates', 'Qty', 'Status', '<span class="visually-hidden">Actions</span>'], all.map(adminBookingRow))
+        : emptyState('No bookings with this status.', 'ti-checklist');
 }
 
 async function reloadAll() {
@@ -105,6 +150,17 @@ $('#booking-filters').addEventListener('submit', (event) => {
     runAction(loadBookings);
 });
 
+function resetEquipmentForm() {
+    equipmentForm.reset();
+    equipmentForm.elements.id.value = '';
+    $('#editor-title').textContent = 'Add equipment';
+}
+
+$('#add-equipment').addEventListener('click', () => {
+    resetEquipmentForm();
+    openModal('equipment-editor');
+});
+
 $('#equipment-list').addEventListener('click', (event) => {
     const button = event.target.closest('[data-action]');
     if (!button) return;
@@ -117,13 +173,12 @@ $('#equipment-list').addEventListener('click', (event) => {
         bookingForm.elements.start_date.min = todayString();
         bookingForm.elements.end_date.min = todayString();
         $('#booking-title').textContent = `Book ${item.name} (${item.available_quantity} available)`;
-        $('#booking-panel').hidden = false;
-        $('#booking-panel').scrollIntoView({ behavior: 'smooth' });
+        openModal('booking-panel');
     }
     if (button.dataset.action === 'edit') {
         fillForm(equipmentForm, item);
-        $('#editor-title').firstChild.textContent = `Edit ${item.name} `;
-        $('#equipment-editor').scrollIntoView({ behavior: 'smooth' });
+        $('#editor-title').textContent = `Edit ${item.name}`;
+        openModal('equipment-editor');
     }
     if (button.dataset.action === 'delete' && confirm(`Delete "${item.name}"? This cannot be undone.`)) {
         runAction(async () => {
@@ -134,15 +189,11 @@ $('#equipment-list').addEventListener('click', (event) => {
     }
 });
 
-$('#close-booking').addEventListener('click', () => {
-    $('#booking-panel').hidden = true;
-});
-
 bookingForm.addEventListener('submit', (event) => {
     event.preventDefault();
     runAction(async () => {
         const result = await apiRequest('/bookings', { method: 'POST', body: formValues(bookingForm) });
-        $('#booking-panel').hidden = true;
+        closeModal('booking-panel');
         showNotice(result.message);
         await reloadAll();
     });
@@ -170,14 +221,6 @@ $('#all-bookings').addEventListener('click', (event) => {
     });
 });
 
-function resetEquipmentForm() {
-    equipmentForm.reset();
-    equipmentForm.elements.id.value = '';
-    $('#editor-title').firstChild.textContent = 'Add equipment ';
-}
-
-$('#cancel-edit').addEventListener('click', resetEquipmentForm);
-
 equipmentForm.addEventListener('submit', (event) => {
     event.preventDefault();
     runAction(async () => {
@@ -187,6 +230,7 @@ equipmentForm.addEventListener('submit', (event) => {
             method: editing ? 'PUT' : 'POST',
             body: values
         });
+        closeModal('equipment-editor');
         resetEquipmentForm();
         showNotice(result.message);
         await loadEquipment();
@@ -198,8 +242,15 @@ equipmentForm.addEventListener('submit', (event) => {
 runAction(async () => {
     currentUser = await loadCurrentUser();
     const isAdmin = currentUser.role === 'admin';
-    $('#equipment-editor').hidden = !isAdmin;
+    $('#add-equipment').hidden = !isAdmin;
     $('#manage-bookings').hidden = !isAdmin;
     await reloadAll();
-    if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
+
+    // Links from the dashboard: #equipment-editor opens the form, #manage-bookings scrolls to the table.
+    if (location.hash === '#equipment-editor' && isAdmin) {
+        resetEquipmentForm();
+        openModal('equipment-editor');
+    } else if (location.hash) {
+        document.querySelector(location.hash)?.scrollIntoView();
+    }
 });

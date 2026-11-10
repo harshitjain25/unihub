@@ -4,121 +4,220 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Equipment · UniHub</title>
+    <link rel="stylesheet" href="/vendor/tabler/css/tabler.min.css">
+    <link rel="stylesheet" href="/vendor/tabler-icons/tabler-icons.min.css">
     <link rel="stylesheet" href="/css/styles.css">
+    <script defer src="/vendor/tabler/js/tabler.min.js"></script>
     <script defer src="/js/common.js"></script>
     <script defer src="/js/equipment.js"></script>
 </head>
 <body>
-    <a class="skip-link" href="#content">Skip to main content</a>
-    <header class="site-header">
-        <a class="logo" href="/" aria-label="UniHub home">
-            <span class="logo-mark" aria-hidden="true">U</span>
-            <span class="logo-text">Uni<strong>Hub</strong></span>
-        </a>
-        <nav aria-label="Main">
-            <a href="/dashboard.html">Dashboard</a>
-            <a href="/equipment.html">Equipment</a>
-            <a href="/lost-found.html">Lost &amp; Found</a>
-            <a href="/volunteering.html">Volunteering</a>
-            <a href="/profile">Profile</a>
-        </nav>
-        <button id="logout" class="secondary" type="button" hidden>Log out</button>
-    </header>
-
-    <main id="content">
-        <div id="notice" class="notice" role="status" aria-live="polite"></div>
-        <p class="eyebrow">Borrow · Create · Return</p>
-        <h1>Campus equipment</h1>
-        <p>Request equipment for your coursework. Pending and approved bookings hold stock until they are cancelled, rejected, or returned.</p>
-
-        <section id="equipment-editor" class="panel admin-panel" hidden>
-            <h2 id="editor-title">Add equipment <span class="badge badge-admin">Admin</span></h2>
-            <form id="equipment-form">
-                <input type="hidden" name="id">
-                <div class="form-grid">
-                    <label>Name<input name="name" type="text" required maxlength="150"></label>
-                    <label>Category
-                        <select name="category" required>
-                            <option>Laptop</option>
-                            <option>Camera</option>
-                            <option>Projector</option>
-                            <option>Audio equipment</option>
-                            <option>Lab equipment</option>
-                            <option>Other</option>
-                        </select>
-                    </label>
-                    <label>Total quantity<input name="total_quantity" type="number" required min="1" step="1"></label>
-                    <label>Status
-                        <select name="status">
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-                    </label>
-                    <label class="wide">Description<textarea name="description" required maxlength="5000"></textarea></label>
+    <a class="visually-hidden-focusable btn btn-primary position-absolute m-2" href="#content">Skip to main content</a>
+    <div class="page">
+        <header class="navbar navbar-expand-md d-print-none">
+            <div class="container-xl">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand pe-0 pe-md-3" href="/dashboard.html" aria-label="UniHub home">
+                    <span class="brand-mark" aria-hidden="true">U</span>UniHub
+                </a>
+                <div class="navbar-nav flex-row order-md-last">
+                    <div class="nav-item dropdown" id="user-menu" hidden>
+                        <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open account menu">
+                            <span class="avatar avatar-sm" id="user-initials"></span>
+                            <span class="d-none d-xl-block ps-2">
+                                <span class="d-block" id="user-name"></span>
+                                <span class="d-block mt-1 small text-secondary" id="user-role"></span>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <a href="/profile" class="dropdown-item"><i class="ti ti-user dropdown-item-icon" aria-hidden="true"></i>Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <button type="button" id="logout" class="dropdown-item"><i class="ti ti-logout dropdown-item-icon" aria-hidden="true"></i>Log out</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="actions">
-                    <button type="submit">Save equipment</button>
-                    <button type="button" id="cancel-edit" class="secondary">Clear form</button>
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard.html">
+                                <span class="nav-link-icon"><i class="ti ti-layout-dashboard" aria-hidden="true"></i></span>
+                                <span class="nav-link-title">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/equipment.html">
+                                <span class="nav-link-icon"><i class="ti ti-device-laptop" aria-hidden="true"></i></span>
+                                <span class="nav-link-title">Equipment</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/lost-found.html">
+                                <span class="nav-link-icon"><i class="ti ti-search" aria-hidden="true"></i></span>
+                                <span class="nav-link-title">Lost &amp; Found</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/volunteering.html">
+                                <span class="nav-link-icon"><i class="ti ti-heart-handshake" aria-hidden="true"></i></span>
+                                <span class="nav-link-title">Volunteering</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">
+                                <span class="nav-link-icon"><i class="ti ti-user" aria-hidden="true"></i></span>
+                                <span class="nav-link-title">Profile</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <main class="page-wrapper" id="content">
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <div class="page-pretitle">Borrow</div>
+                            <h1 class="page-title">Equipment</h1>
+                        </div>
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                                <button type="button" id="add-equipment" class="btn btn-primary" hidden><i class="ti ti-plus icon" aria-hidden="true"></i>Add equipment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-body">
+                <div class="container-xl">
+                    <div id="notice" class="alert" role="status" aria-live="polite" hidden></div>
+                    <p class="text-secondary">Pending and approved bookings hold stock until they are cancelled, rejected, or returned.</p>
+
+                    <form id="equipment-filters" class="card mb-3" role="search">
+                        <div class="card-body">
+                            <div class="row g-2 align-items-end">
+                                <div class="col-md">
+                                    <label class="form-label" for="equipment-search">Search</label>
+                                    <div class="input-icon">
+                                        <span class="input-icon-addon"><i class="ti ti-search" aria-hidden="true"></i></span>
+                                        <input id="equipment-search" class="form-control" name="search" type="search" placeholder="Name or description">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label" for="equipment-category">Category</label>
+                                    <select id="equipment-category" class="form-select" name="category"><option value="">All categories</option><option>Laptop</option><option>Camera</option><option>Projector</option><option>Audio equipment</option><option>Lab equipment</option><option>Other</option></select>
+                                </div>
+                                <div class="col-md-auto">
+                                    <button type="submit" class="btn btn-primary w-100"><i class="ti ti-filter icon" aria-hidden="true"></i>Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div id="equipment-list" class="row row-cards mb-4">
+                        <div class="col-12 text-secondary py-3">Loading equipment…</div>
+                    </div>
+
+                    <section class="card mb-4">
+                        <div class="card-header"><h2 class="card-title">My bookings</h2></div>
+                        <div id="my-bookings" class="table-responsive">
+                            <div class="col-12 text-secondary py-3">Loading your bookings…</div>
+                        </div>
+                    </section>
+
+                    <section class="card" id="manage-bookings" hidden>
+                        <div class="card-header flex-wrap gap-2">
+                            <h2 class="card-title">All bookings <span class="badge bg-purple-lt ms-2">Admin</span></h2>
+                            <div class="card-actions">
+                                <form id="booking-filters" class="d-flex gap-2">
+                                    <select class="form-select" name="status" aria-label="Filter bookings by status"><option value="">All statuses</option><option value="pending" selected>Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="returned">Returned</option><option value="cancelled">Cancelled</option></select>
+                                    <button type="submit" class="btn">Filter</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="all-bookings" class="table-responsive"></div>
+                    </section>
+                </div>
+            </div>
+            <footer class="footer footer-transparent d-print-none">
+                <div class="container-xl text-secondary">UniHub · Equipment, lost &amp; found, and volunteering in one place.</div>
+            </footer>
+        </main>
+    </div>
+    <div class="modal modal-blur fade" id="booking-panel" tabindex="-1" aria-labelledby="booking-title" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <form class="modal-content" id="booking-form">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="booking-title">Book equipment</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-notice alert" role="alert" hidden></div>
+                    <input type="hidden" name="equipment_id">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="booking-start">Start date</label>
+                            <input id="booking-start" class="form-control" name="start_date" type="date" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="booking-end">End date</label>
+                            <input id="booking-end" class="form-control" name="end_date" type="date" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="booking-quantity">Quantity</label>
+                            <input id="booking-quantity" class="form-control" name="quantity" type="number" required min="1" step="1" value="1">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Request booking</button>
                 </div>
             </form>
-        </section>
+        </div>
+    </div>
 
-        <form id="equipment-filters" class="panel filters" role="search">
-            <label>Search<input name="search" type="search" placeholder="Name or description"></label>
-            <label>Category
-                <select name="category">
-                    <option value="">All categories</option>
-                    <option>Laptop</option>
-                    <option>Camera</option>
-                    <option>Projector</option>
-                    <option>Audio equipment</option>
-                    <option>Lab equipment</option>
-                    <option>Other</option>
-                </select>
-            </label>
-            <button type="submit">Search</button>
-        </form>
-
-        <div id="equipment-list" class="cards"><p class="loading">Loading equipment…</p></div>
-
-        <section id="booking-panel" class="panel" hidden>
-            <h2 id="booking-title">Book equipment</h2>
-            <form id="booking-form">
-                <input type="hidden" name="equipment_id">
-                <div class="form-grid">
-                    <label>Start date<input name="start_date" type="date" required></label>
-                    <label>End date<input name="end_date" type="date" required></label>
-                    <label>Quantity<input name="quantity" type="number" required min="1" step="1" value="1"></label>
+    <div class="modal modal-blur fade" id="equipment-editor" tabindex="-1" aria-labelledby="editor-title" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <form class="modal-content" id="equipment-form">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="editor-title">Add equipment</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="actions">
-                    <button type="submit">Request booking</button>
-                    <button type="button" id="close-booking" class="secondary">Cancel</button>
+                <div class="modal-body">
+                    <div class="modal-notice alert" role="alert" hidden></div>
+                    <input type="hidden" name="id">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="equipment-name">Name</label>
+                            <input id="equipment-name" class="form-control" name="name" type="text" required maxlength="150">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="equipment-form-category">Category</label>
+                            <select id="equipment-form-category" class="form-select" name="category" required><option>Laptop</option><option>Camera</option><option>Projector</option><option>Audio equipment</option><option>Lab equipment</option><option>Other</option></select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="equipment-total">Total quantity</label>
+                            <input id="equipment-total" class="form-control" name="total_quantity" type="number" required min="1" step="1">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="equipment-status">Status</label>
+                            <select id="equipment-status" class="form-select" name="status"><option value="active">Active</option><option value="inactive">Inactive</option></select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="equipment-description">Description</label>
+                            <textarea id="equipment-description" class="form-control" name="description" rows="4" required maxlength="5000"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save equipment</button>
                 </div>
             </form>
-        </section>
-
-        <h2 class="section-title">My bookings</h2>
-        <div id="my-bookings" class="cards"><p class="loading">Loading your bookings…</p></div>
-
-        <section id="manage-bookings" class="panel admin-panel" hidden>
-            <h2>All bookings <span class="badge badge-admin">Admin</span></h2>
-            <form id="booking-filters" class="filters">
-                <label>Status
-                    <select name="status">
-                        <option value="">All statuses</option>
-                        <option value="pending" selected>Pending</option>
-                        <option value="approved">Approved</option>
-                        <option value="rejected">Rejected</option>
-                        <option value="returned">Returned</option>
-                        <option value="cancelled">Cancelled</option>
-                    </select>
-                </label>
-                <button type="submit">Filter</button>
-            </form>
-            <div id="all-bookings" class="table-wrap"></div>
-        </section>
-    </main>
-
-    <footer>UniHub · Equipment, lost &amp; found, and volunteering in one place.</footer>
+        </div>
+    </div>
 </body>
 </html>
