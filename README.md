@@ -276,19 +276,6 @@ The integration test creates uniquely named `test_…` accounts and records, run
 | `EADDRINUSE :3000` | Another server is running. Stop it or change `PORT` in `.env`. |
 | Pages show a blank file | Open the site through `http://localhost:3000`, not `file:///`. |
 
-## Screenshots
-
-Add screenshots to a `screenshots/` folder before submitting, and link them here:
-
-- Home page
-- Register and login
-- Student dashboard
-- Equipment list with a booking
-- Admin "All bookings" table
-- Lost and found with filters
-- Volunteering with remaining slots
-- Mobile view
-
 ## GitHub submission
 
 Before pushing, confirm that `.env`, `node_modules/`, and `.local-backups/` are **not** staged. They are listed in `.gitignore`.
